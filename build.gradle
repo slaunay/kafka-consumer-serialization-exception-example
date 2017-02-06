@@ -1,0 +1,39 @@
+plugins {
+    id "java"
+    id "application"
+}
+
+group = "consumer"
+description = "Kafka consumer"
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = "consumer.Consumer"
+
+run {
+    args(
+      System.getProperty("brokers", "localhost:9092"),
+      System.getProperty("topic", "test"),
+      System.getProperty("group", "group-test")
+    )
+}
+
+// Extra properties
+ext {
+    slf4jVer = "1.7.10"
+    kafkaVer = System.getProperty("kafkaVersion", "0.10.1.1")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(group: "org.slf4j", name: "slf4j-api", version: slf4jVer)
+    compile(group: "org.apache.kafka", name: "kafka-clients", version: kafkaVer)
+
+    runtime(group: "org.slf4j", name: "log4j-over-slf4j", version: slf4jVer)
+    runtime(group: "org.slf4j", name: "jcl-over-slf4j", version: slf4jVer)
+    runtime(group: "ch.qos.logback", name: "logback-classic", version: "1.1.3")
+}
